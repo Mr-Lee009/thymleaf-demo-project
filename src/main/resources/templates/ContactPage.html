@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Page</title>
+</head>
+<body>
+day la trang Contact page!
+<h2>Form Infor</h2>
+
+<form th:action="@{/home/contact/submit}" method="post">
+    <label>Name</label>
+    <input type="text" name="name" th:value="${form.name}"/>
+    <br>
+    <label>Phone Number</label>
+    <input type="text" name="phoneNumber" th:value="${form.phoneNumber}"/>
+    <br>
+    <label>Sex</label>
+
+    <th:block th:each="gender : ${form.genderTypes}">
+        <input type="checkbox" name="sex" th:value="${gender}"> <label th:text="${gender}"></label>
+    </th:block>
+    <br>
+
+    <label>Type</label>
+    <select name="type">
+
+        <th:block th:each="type : ${form.types}">
+            <option th:value="${type}" th:text="${type}" th:selected="${form.type == type}">M</option>
+        </th:block>
+    </select>
+    <br>
+    <input type="submit" value="SUBMIT">
+
+    <div th:switch="${message}">
+        <b th:case="'1'">SUCCESS</b>
+        <b th:case="'0'">FALSE</b>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bill Page</title>
+    <style>
+        .even-row {
+            background: antiquewhite;
+        }
+
+        .old-row {
+            background: blueviolet;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <th:block th:each="name : ${names}">
+        <li th:text="${name}"></li>
+    </th:block>
+</ul>
+
+<!--table-->
+<H1>Table</H1>
+<table border="1">
+    <tr>
+        <th>index</th>
+        <th>count</th>
+        <th>size</th>
+        <th>even</th>
+        <th>odd</th>
+        <th>first</th>
+        <th>last</th>
+        <th>name</th>
+    </tr>
+
+    <tr th:each="name,state : ${names}">
+        <td th:text="${state.index}"></td>
+        <td th:text="${state.count}"></td>
+        <td th:text="${state.size}"></td>
+        <td th:text="${state.even}"></td>
+        <td th:text="${state.odd}"></td>
+        <td th:text="${state.first}"></td>
+        <td th:text="${state.last}"></td>
+        <td th:text="${name}"></td>
+    </tr>
+</table>
+
+
+<!--table-->
+<H1>Info staff</H1>
+<table border="1">
+    <tr>
+        <th>name</th>
+        <th>old</th>
+        <th>phone</th>
+        <th>salary</th>
+    </tr>
+    <tr th:each="human,state : ${people}" th:classappend="${human.old < 10 } ?'odd-row':'even-row'">
+        <td th:text="${human.name}"></td>
+        <td th:text="${human.old}"></td>
+        <td th:text="${human.phone}"></td>
+        <td th:text="${human.salary}"></td>
+    </tr>
+
+    <th:block th:replace="common/header :: formSearch('Ben A',true,'Ben B',true,${names})">
+
+    </th:block>
+
+    <th:block th:replace="common/header :: formSearch('Ben C',true,'Ben D',true,${names2})">
+
+    </th:block>
+</table>
+</body>
+
+
+
+</html>
