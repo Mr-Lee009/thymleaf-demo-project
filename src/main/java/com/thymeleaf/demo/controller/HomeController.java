@@ -66,6 +66,4 @@ public class HomeController {
 
         return "BillPage";
     }
-
-
 }
