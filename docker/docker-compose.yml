@@ -1,0 +1,63 @@
+version: '3.8'
+services:
+  master:
+    image: library/mysql:8.0
+    container_name: mysql-master
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydb
+      MSQL_USER: ducla
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql-network
+    volumes:
+      - ./master-data:/var/lib/mysql
+      - ./master-config:/etc/mysql/conf.d
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --server-id=1
+      --log-bin=mysql-bin
+      --binlog-format=ROW
+  slave_1:
+    image: library/mysql:8.0
+    container_name: mysql-slave1
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    networks:
+      - mysql-network
+    depends_on:
+      - master
+    volumes:
+      - ./slave1-data:/var/lib/mysql
+      - ./slave1-config:/etc/mysql/conf.d
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --server-id=2
+      --relay-log=mysql-relay-bin
+      --read-only=1
+  slave_2:
+    image: library/mysql:8.0
+    container_name: mysql-slave2
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    networks:
+      - mysql-network
+    depends_on:
+      - master
+    volumes:
+      - ./slave2-data:/var/lib/mysql
+      - ./slave2-config:/etc/mysql/conf.d
+    command:
+      --default-authentication-plugin=mysql_native_password
+      --server-id=3
+      --relay-log=mysql-relay-bin
+      --read-only=1
+networks:
+  mysql-network:
+    driver: bridge

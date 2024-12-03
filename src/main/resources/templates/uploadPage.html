@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+
 <body>
 
 <h1>Form 1</h1>
@@ -18,7 +20,60 @@
 
 
 <h1>Form 1</h1>
-<form th:action="@{/api/file/upload-form}" method="post" enctype="multipart/form-data">
+<form id="myForm" th:action="@{/api/file/upload-form}" method="post" enctype="multipart/form-data">
+    <div>
+        <label>company code</label>
+        <select name="companyCode">
+            <option value="">_</option>
+            <option value="VPbank">VPbank</option>
+            <option value="TECHbank">TECHbank</option>
+            <option value="BIDV">BIDV</option>
+            <option value="Agribank">Agribank</option>
+            <option value="SHBbank">SHBbank</option>
+        </select>
+
+        <label>unit code</label>
+        <select name="unitCode">
+            <option value="">_</option>
+            <option value="UNIT_1">UNIT code 1</option>
+            <option value="UNIT_2">UNIT code 2</option>
+            <option value="UNIT_3">UNIT code 3</option>
+            <option value="UNIT_4">UNIT code 4</option>
+            <option value="UNIT_5">UNIT code 5</option>
+        </select>
+
+        <label>div code</label>
+        <select name="divCode">
+            <option value="">_</option>
+            <option value="DIV_1">div code 1</option>
+            <option value="DIV_2">div code 2</option>
+            <option value="DIV_3">div code 3</option>
+            <option value="DIV_4">div code 4</option>
+            <option value="DIV_5">div code 5</option>
+        </select>
+
+        <label>team code</label>
+        <select name="teamCode">
+            <option value="">_</option>
+            <option value="TEAM_1">TEAM 1</option>
+            <option value="TEAM_2">TEAM 2</option>
+            <option value="TEAM_3">TEAM 3</option>
+            <option value="TEAM_4">TEAM 4</option>
+            <option value="TEAM_5">TEAM 5</option>
+        </select>
+
+        <label>office code</label>
+        <select name="officeCode">
+            <option value="">_</option>
+            <option value="OFFICE_1">office code 1</option>
+            <option value="OFFICE_2">office code 2</option>
+            <option value="OFFICE_3">office code 3</option>
+            <option value="OFFICE_4">office code 4</option>
+            <option value="OFFICE_5">office code 5</option>
+        </select>
+        <br>
+    </div>
+
     <div>
         <label>cccd mat truoc</label><br>
         <input type="file" accept="*/*" name="cccdMt"><br>
@@ -38,8 +93,80 @@
         <input type="text" name="phoneNumber"><br>
     </div>
     <br>
-    <input type="submit" value="submmit">
+    <input type="submit" value="submmit" name="submit_form">
 </form>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" type="application/javascript"></script>
+<!--<script src="/assets/js/jquery.min.js" type="application/javascript"></script>-->
+<!--<script src="/assets/js/jquery.min.js"></script>-->
+<script type="application/javascript">
+    const RULE_VALIDATE = {
+        rule: {
+            cccdMT: {
+                required: true,
+                isNoteNull: true
+            },
+            cccdMs: {
+                required: true,
+                isNoteNull: true
+            },
+            phoneNumber: {
+                required: true,
+            },
+        },
+        message: {
+            cccdMT: {
+                required: "enter cccdMT code.",
+            },
+            cccdMs: {
+                required: "enter cccdMs code.",
+            },
+            phoneNumber: {
+                required: "enter phoneNumber code.",
+            },
+        }
+    }
 
+    let data = [
+        { "key": "a", "value": "abc" },
+        { "key": "b", "value": "cc" },
+        { "key": "cccc", "value": "DDDDD" }
+    ];
+
+    $(document).ready(() => {
+
+        $("[name='company']").attr("name", "companyCode");
+
+        $("[name='submit_form']").on("click", function(e) {
+            //stop submitting the form to see the disabled button effect
+            e.preventDefault();
+
+            let name = $("[name='company']")
+            console.log("name element = ", name);
+
+
+            let organizationCode = getOrganizationCode();
+            let companyCode = $("[name='companyCode']").val()
+            console.log("OrganizationCode =", organizationCode, ", CompanyCOde =", companyCode);
+        });
+    });
+
+    function getOrganizationCode() {
+        let fields = ["companyCode", "unitCode", "divCode", "teamCode", "officeCode"];
+        fields = fields.reverse();
+        for (let i = 0; i < fields.length; i++) {
+            let key = fields[i];
+            let value = $("[name='" + key + "']").val();
+            if (!isNullOrEmpty(value)) {
+                return value;
+            }
+        }
+        return "NOT FOUND!";
+    }
+
+    function isNullOrEmpty(value) {
+        return typeof value === 'string' && value.trim() === '';
+    }
+</script>
 </body>
+
 </html>
