@@ -1,3 +1,8 @@
-ALTER TABLE history ADD update_date_1 datetime;
-ALTER TABLE history ADD update_date_2 datetime;
-ALTER TABLE history ADD update_date_3 datetime;
+CREATE TABLE Persons
+(
+    id  int primary key auto_increment,
+    lastName  varchar(255),
+    firstName varchar(255),
+    address   varchar(255),
+    city      varchar(255)
+);
