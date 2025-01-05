@@ -1,8 +1,7 @@
 CREATE TABLE Persons
 (
-    PersonID  int primary key auto_increment,
-    LastName  varchar(255),
-    FirstName varchar(255),
-    Address   varchar(255),
-    City      varchar(255)
+    id  int primary key auto_increment,
+    create_date datetime default now(),
+    update_date timestamp ,
+    last_update_date bigint
 );
