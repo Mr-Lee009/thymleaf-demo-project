@@ -28,11 +28,11 @@ public class Product {
     private Long rating = 0L;
 
     @Column(name = "create_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
 
     @Column(name = "update_at")
-    @Temporal(TemporalType.TIMESTAMP)
+//    @Temporal(TemporalType.TIMESTAMP)
     private Date updateAt;
 
     @Column(name = "category_id")
