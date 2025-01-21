@@ -8,9 +8,17 @@
     <script th:src="@{/assets/js/common.js}"></script>
 </head>
 
+
+
 <body>
+    <label>Begin Time</label>
+    <b>[[${form.beginTime}]]</b>
+    <br>
+    <label>End Time</label>
+    <b>[[${form.endTime}]]</b>
+
 <table>
-    <thead style="border: blue thin solid 2px">
+    <thead>
     <tr>
         <th>id</th>
         <th>image</th>
@@ -19,7 +27,6 @@
     </tr>
     </thead>
     <tbody>
-
     <tr th:each="sub : ${form.questions}">
         <td th:text="${sub.id}"/>
         <td>
