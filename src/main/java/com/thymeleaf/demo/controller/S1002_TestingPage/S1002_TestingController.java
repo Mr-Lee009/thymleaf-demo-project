@@ -18,6 +18,6 @@ public class S1002_TestingController {
         // init screen
         model.addAttribute("form",helper.initScreen());
 
-        return "s1201_testing_page";
+        return "s1002_testing_page";
     }
 }
