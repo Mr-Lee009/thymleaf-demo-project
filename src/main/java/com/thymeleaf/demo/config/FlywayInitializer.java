@@ -38,10 +38,13 @@ public class FlywayInitializer {
 
     @Bean
     public DataSource dataSource(){
+        System.out.println("set up flyway .......");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(datasourceUrl);
         dataSource.setUsername(username);
         dataSource.setPassword(password);
+        System.out.println("setup done.......");
+
         return dataSource;
     }
 }
