@@ -1,8 +1,10 @@
-CREATE TABLE Persons
+CREATE TABLE token
 (
-    id  int primary key auto_increment,
-    last_name  varchar(255),
-    first_name varchar(255),
-    address   varchar(255),
-    city      varchar(255)
+    id bigint primary key auto_increment,
+    access_token nvarchar(1024),
+    refresh_token nvarchar(1024),
+    create_by nvarchar(1024),
+    update_by nvarchar(1024),
+    create_time timestamp default current_timestamp,
+    update_time timestamp default current_timestamp
 );
