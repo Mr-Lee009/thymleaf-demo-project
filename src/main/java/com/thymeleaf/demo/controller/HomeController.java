@@ -55,12 +55,12 @@ public class HomeController {
 
 
         List<Human> people = new ArrayList<>();
-        people.add(new Human("Alex", 15, "113", 50000.100));
-        people.add(new Human("Roma", 12, "113", 10000.100));
-        people.add(new Human("MeoMeo", 5, "113", 90000.100));
-        people.add(new Human("Adam", 9, "113", 10000.100));
-        people.add(new Human("Alex sander", 44, "113", 10000.100));
-        people.add(new Human("CR7", 25, "113", 10000.100));
+        people.add(new Human("123","Alex", 15, "113", 50000.100));
+        people.add(new Human("123","Roma", 12, "113", 10000.100));
+        people.add(new Human("123","MeoMeo", 5, "113", 90000.100));
+        people.add(new Human("123","Adam", 9, "113", 10000.100));
+        people.add(new Human("123","Alex sander", 44, "113", 10000.100));
+        people.add(new Human("123","CR7", 25, "113", 10000.100));
 
         model.addAttribute("people", people);
 
