@@ -23,7 +23,7 @@ public class FileController {
     private static final String UPLOAD_DIRECTORY = "./files/";
     private final ConcurrentHashMap<String, Integer> uploadChucksMap = new ConcurrentHashMap<>();
 
-    @GetMapping("/home")
+    @GetMapping("")
     public String uploadPage() {
         return "uploadPage";
     }

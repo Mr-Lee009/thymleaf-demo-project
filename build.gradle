@@ -40,6 +40,11 @@ dependencies {
 
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.0'
 
+    //Redis implement
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis'
+    implementation group: 'io.lettuce', name: 'lettuce-core'
+
+
 }
 
 tasks.named('test') {

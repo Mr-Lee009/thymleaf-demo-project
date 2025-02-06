@@ -67,7 +67,7 @@ public class s1002_TestingHelper {
 
         s1002_ListQuestionForm form = s1002_ListQuestionForm.builder()
                 .nameTest("Test 1.")
-                .user(new Human("ducla", 28, "0999999", 29d))
+                .user(new Human("1","ducla", 28, "0999999", 29d))
                 .beginTime(new Date(System.currentTimeMillis()))
                 .endTime(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
                 .questions(questions)

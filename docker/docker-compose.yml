@@ -1,5 +1,17 @@
 version: '3.8'
 services:
+  redis:
+    image: redis:latest        # Sử dụng image Redis mới nhất từ Docker Hub
+    container_name: redis      # Tên container là "redis"
+    ports:
+      - "6379:6379"            # Mở cổng 6379 (cổng mặc định của Redis)
+    environment:
+      - REDIS_PASSWORD=password  # Thiết lập mật khẩu Redis
+    volumes:
+      - redis_data:/data       # Mount volume để lưu trữ dữ liệu Redis
+    networks:
+      - mysql-network          # Kết nối với network "redis_network"
+
   master:
     image: library/mysql:8.0
     container_name: mysql-master
@@ -61,3 +73,5 @@ services:
 networks:
   mysql-network:
     driver: bridge
+volumes:
+  redis_data:
