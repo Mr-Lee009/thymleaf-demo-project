@@ -4,169 +4,239 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <th:block
+            th:replace="common/header :: header"
+    ></th:block>
 </head>
 
 <body>
-
-<h1>Form 1</h1>
-<form th:action="@{/api/file/upload-files}" method="post" enctype="multipart/form-data">
-    <div>
-        <label>cccd mat truoc</label><br>
-        <input type="file" accept="*/*" th:name="files" multiple><br>
-    </div>
-    <br>
-    <input type="submit" value="submmit">
-</form>
-
-
-<h1>Form 1</h1>
-<form id="myForm" th:action="@{/api/file/upload-form}" method="post" enctype="multipart/form-data">
-    <div>
-        <label>company code</label>
-        <select name="companyCode">
-            <option value="">_</option>
-            <option value="VPbank">VPbank</option>
-            <option value="TECHbank">TECHbank</option>
-            <option value="BIDV">BIDV</option>
-            <option value="Agribank">Agribank</option>
-            <option value="SHBbank">SHBbank</option>
-        </select>
-
-        <label>unit code</label>
-        <select name="unitCode">
-            <option value="">_</option>
-            <option value="UNIT_1">UNIT code 1</option>
-            <option value="UNIT_2">UNIT code 2</option>
-            <option value="UNIT_3">UNIT code 3</option>
-            <option value="UNIT_4">UNIT code 4</option>
-            <option value="UNIT_5">UNIT code 5</option>
-        </select>
-
-        <label>div code</label>
-        <select name="divCode">
-            <option value="">_</option>
-            <option value="DIV_1">div code 1</option>
-            <option value="DIV_2">div code 2</option>
-            <option value="DIV_3">div code 3</option>
-            <option value="DIV_4">div code 4</option>
-            <option value="DIV_5">div code 5</option>
-        </select>
-
-        <label>team code</label>
-        <select name="teamCode">
-            <option value="">_</option>
-            <option value="TEAM_1">TEAM 1</option>
-            <option value="TEAM_2">TEAM 2</option>
-            <option value="TEAM_3">TEAM 3</option>
-            <option value="TEAM_4">TEAM 4</option>
-            <option value="TEAM_5">TEAM 5</option>
-        </select>
-
-        <label>office code</label>
-        <select name="officeCode">
-            <option value="">_</option>
-            <option value="OFFICE_1">office code 1</option>
-            <option value="OFFICE_2">office code 2</option>
-            <option value="OFFICE_3">office code 3</option>
-            <option value="OFFICE_4">office code 4</option>
-            <option value="OFFICE_5">office code 5</option>
-        </select>
-        <br>
+<div class="container">
+    <div class="row">
+        <h1>Form 1</h1>
+        <form th:action="@{/api/file/upload-files}" method="post" enctype="multipart/form-data">
+            <div>
+                <label>cccd mat truoc</label><br>
+                <input type="file" accept="*/*" th:name="files" multiple><br>
+            </div>
+            <br>
+            <input type="submit" value="submmit">
+        </form>
     </div>
 
-    <div>
-        <label>cccd mat truoc</label><br>
-        <input type="file" accept="*/*" name="cccdMt"><br>
-    </div>
+    <div class="row">
+        <h1>Form 1</h1>
+        <form id="myForm" th:action="@{/api/file/upload-form}" method="post" enctype="multipart/form-data">
+            <div>
+                <label>company code</label>
+                <select name="companyCode">
+                    <option value="">_</option>
+                    <option value="VPbank">VPbank</option>
+                    <option value="TECHbank">TECHbank</option>
+                    <option value="BIDV">BIDV</option>
+                    <option value="Agribank">Agribank</option>
+                    <option value="SHBbank">SHBbank</option>
+                </select>
 
-    <div>
-        <label>cccd mat sau</label><br>
-        <input type="file" accept="*/*" name="cccdMs"><br>
-    </div>
+                <label>unit code</label>
+                <select name="unitCode">
+                    <option value="">_</option>
+                    <option value="UNIT_1">UNIT code 1</option>
+                    <option value="UNIT_2">UNIT code 2</option>
+                    <option value="UNIT_3">UNIT code 3</option>
+                    <option value="UNIT_4">UNIT code 4</option>
+                    <option value="UNIT_5">UNIT code 5</option>
+                </select>
 
-    <div>
-        <label>name</label><br>
-        <input type="text" name="name"><br>
-    </div>
-    <div>
-        <label>phone number</label><br>
-        <input type="text" name="phoneNumber"><br>
-    </div>
-    <br>
-    <input type="submit" value="submmit" name="submit_form">
-</form>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" type="application/javascript"></script>
-<!--<script src="/assets/js/jquery.min.js" type="application/javascript"></script>-->
-<!--<script src="/assets/js/jquery.min.js"></script>-->
-<script type="application/javascript">
-    const RULE_VALIDATE = {
-        rule: {
-            cccdMT: {
-                required: true,
-                isNoteNull: true
-            },
-            cccdMs: {
-                required: true,
-                isNoteNull: true
-            },
-            phoneNumber: {
-                required: true,
-            },
-        },
-        message: {
-            cccdMT: {
-                required: "enter cccdMT code.",
-            },
-            cccdMs: {
-                required: "enter cccdMs code.",
-            },
-            phoneNumber: {
-                required: "enter phoneNumber code.",
-            },
-        }
-    }
+                <label>div code</label>
+                <select name="divCode">
+                    <option value="">_</option>
+                    <option value="DIV_1">div code 1</option>
+                    <option value="DIV_2">div code 2</option>
+                    <option value="DIV_3">div code 3</option>
+                    <option value="DIV_4">div code 4</option>
+                    <option value="DIV_5">div code 5</option>
+                </select>
 
-    let data = [
-        { "key": "a", "value": "abc" },
-        { "key": "b", "value": "cc" },
-        { "key": "cccc", "value": "DDDDD" }
-    ];
+                <label>team code</label>
+                <select name="teamCode">
+                    <option value="">_</option>
+                    <option value="TEAM_1">TEAM 1</option>
+                    <option value="TEAM_2">TEAM 2</option>
+                    <option value="TEAM_3">TEAM 3</option>
+                    <option value="TEAM_4">TEAM 4</option>
+                    <option value="TEAM_5">TEAM 5</option>
+                </select>
 
-    $(document).ready(() => {
+                <label>office code</label>
+                <select name="officeCode">
+                    <option value="">_</option>
+                    <option value="OFFICE_1">office code 1</option>
+                    <option value="OFFICE_2">office code 2</option>
+                    <option value="OFFICE_3">office code 3</option>
+                    <option value="OFFICE_4">office code 4</option>
+                    <option value="OFFICE_5">office code 5</option>
+                </select>
+                <br>
+            </div>
 
-        $("[name='company']").attr("name", "companyCode");
+            <div>
+                <label>cccd mat truoc</label><br>
+                <input type="file" accept="*/*" name="cccdMt"><br>
+            </div>
 
-        $("[name='submit_form']").on("click", function(e) {
-            //stop submitting the form to see the disabled button effect
-            e.preventDefault();
+            <div>
+                <label>cccd mat sau</label><br>
+                <input type="file" accept="*/*" name="cccdMs"><br>
+            </div>
 
-            let name = $("[name='company']")
-            console.log("name element = ", name);
-
-
-            let organizationCode = getOrganizationCode();
-            let companyCode = $("[name='companyCode']").val()
-            console.log("OrganizationCode =", organizationCode, ", CompanyCOde =", companyCode);
-        });
-    });
-
-    function getOrganizationCode() {
-        let fields = ["companyCode", "unitCode", "divCode", "teamCode", "officeCode"];
-        fields = fields.reverse();
-        for (let i = 0; i < fields.length; i++) {
-            let key = fields[i];
-            let value = $("[name='" + key + "']").val();
-            if (!isNullOrEmpty(value)) {
-                return value;
+            <div>
+                <label>name</label><br>
+                <input type="text" name="name"><br>
+            </div>
+            <div>
+                <label>phone number</label><br>
+                <input type="text" name="phoneNumber"><br>
+            </div>
+            <br>
+            <input type="submit" value="submmit" name="submit_form">
+        </form>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" type="application/javascript"></script>
+        <script type="application/javascript">
+            const RULE_VALIDATE = {
+                rule: {
+                    cccdMT: {
+                        required: true,
+                        isNoteNull: true
+                    },
+                    cccdMs: {
+                        required: true,
+                        isNoteNull: true
+                    },
+                    phoneNumber: {
+                        required: true,
+                    },
+                },
+                message: {
+                    cccdMT: {
+                        required: "enter cccdMT code.",
+                    },
+                    cccdMs: {
+                        required: "enter cccdMs code.",
+                    },
+                    phoneNumber: {
+                        required: "enter phoneNumber code.",
+                    },
+                }
             }
-        }
-        return "NOT FOUND!";
-    }
 
-    function isNullOrEmpty(value) {
-        return typeof value === 'string' && value.trim() === '';
-    }
-</script>
+            let data = [
+                {"key": "a", "value": "abc"},
+                {"key": "b", "value": "cc"},
+                {"key": "cccc", "value": "DDDDD"}
+            ];
+
+            $(document).ready(() => {
+
+                $("[name='company']").attr("name", "companyCode");
+
+                $("[name='submit_form']").on("click", function (e) {
+                    //stop submitting the form to see the disabled button effect
+                    e.preventDefault();
+
+                    let name = $("[name='company']")
+                    console.log("name element = ", name);
+
+
+                    let organizationCode = getOrganizationCode();
+                    let companyCode = $("[name='companyCode']").val()
+                    console.log("OrganizationCode =", organizationCode, ", CompanyCOde =", companyCode);
+                });
+            });
+
+            function getOrganizationCode() {
+                let fields = ["companyCode", "unitCode", "divCode", "teamCode", "officeCode"];
+                fields = fields.reverse();
+                for (let i = 0; i < fields.length; i++) {
+                    let key = fields[i];
+                    let value = $("[name='" + key + "']").val();
+                    if (!isNullOrEmpty(value)) {
+                        return value;
+                    }
+                }
+                return "NOT FOUND!";
+            }
+
+            function isNullOrEmpty(value) {
+                return typeof value === 'string' && value.trim() === '';
+            }
+        </script>
+    </div>
+
+    <div class="row border-1">
+        <h1>Form submit data</h1>
+        <form>
+            <div class="form-group row">
+                <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control form-control-sm" id="inputEmail3" placeholder="Email">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control form-control-sm" id="inputPassword3" placeholder="Password">
+                </div>
+            </div>
+            <fieldset class="form-group">
+                <div class="row">
+                    <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1"
+                                   value="option1" checked>
+                            <label class="form-check-label" for="gridRadios1">
+                                First radio
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2"
+                                   value="option2">
+                            <label class="form-check-label" for="gridRadios2">
+                                Second radio
+                            </label>
+                        </div>
+                        <div class="form-check disabled">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3"
+                                   value="option3" disabled>
+                            <label class="form-check-label" for="gridRadios3">
+                                Third disabled radio
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group row">
+                <div class="col-sm-2">Checkbox</div>
+                <div class="col-sm-10">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="gridCheck1">
+                        <label class="form-check-label" for="gridCheck1">
+                            Example checkbox
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Sign in</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<th:block
+        th:replace="common/header :: footer"
+></th:block>
 </body>
 
 </html>
