@@ -11,3 +11,11 @@ image{
     width: 200px;
     height: 200px;
 }
+
+.box{
+    background-color: aquamarine;
+    height: 40px;
+    padding: 2px;
+    margin: 2px;
+    border: #ccc 2px solid;
+}
