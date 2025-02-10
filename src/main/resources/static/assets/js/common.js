@@ -1,18 +1,27 @@
 
+const type_seat = {
+    "First Class Seat": { rows: ["A", "B", "C","D", "E", "F"], seatsPerRow: 4 },
+    "Premium Class": { rows: ["D", "E", "F"], seatsPerRow: 6 },
+    "Business Class": { rows: ["G", "H", "I"], seatsPerRow: 8 },
+    "Sleeper First Class": { rows: ["J", "K"], seatsPerRow: 4 }
+};
+
 $(document).ready(function () {
-    initScreen();
+    initScreen("Business Class"); // Mặc định chọn loại ghế
 });
 
 function generateRowHTML(rowLabel, cols) {
-    let seatBoxes = cols.map(col => 
+    let seatBoxesArr = cols.map(col => 
         `<div class="col"><div class="box">${rowLabel}${col}</div></div>`
-    ).join(""); // Tạo HTML cho từng ghế
+    );
 
+    let leftSideCount = Math.floor(cols.length / 2);
+    
     return `
     <div class="row">
         <div class="col-sm-5 arr-train">
             <div class="row text-center">
-                ${seatBoxes.slice(0, 3)}  <!-- 3 ghế bên trái -->
+                ${seatBoxesArr.slice(0, leftSideCount).join("")}  
             </div>
         </div>
 
@@ -20,21 +29,26 @@ function generateRowHTML(rowLabel, cols) {
 
         <div class="col-sm-5 arr-train">
             <div class="row text-center">
-                ${seatBoxes.slice(3)}  <!-- 3 ghế bên phải -->
+                ${seatBoxesArr.slice(leftSideCount).join("")}  
             </div>
         </div>
     </div>
     `;
 }
 
-function initScreen() {
-    let rows = ["A", "B", "C", "D", "E", "F"];
-    let numberOfSeats = 6; // Chỉ cần thay đổi số ghế ở đây
-    let cols = Array.from({ length: numberOfSeats }, (_, i) => (i + 1).toString());
+function initScreen(seatType) {
+    if (!type_seat[seatType]) {
+        console.error("Invalid seat type!");
+        return;
+    }
 
-    let chairHTML = rows.map(row => generateRowHTML(row, cols)).join(""); // Tạo toàn bộ HTML
+    let { rows, seatsPerRow } = type_seat[seatType];
+    let cols = Array.from({ length: seatsPerRow }, (_, i) => (i + 1).toString());
 
-    $(".container").append(chairHTML); // Chèn HTML vào .container
+    let chairHTML = rows.map(row => generateRowHTML(row, cols)).join("");
+
+    $(".container").empty().append(chairHTML);
 }
+
 
 

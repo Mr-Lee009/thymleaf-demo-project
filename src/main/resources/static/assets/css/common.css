@@ -19,3 +19,15 @@ image{
     margin: 2px;
     border: #ccc 2px solid;
 }
+
+#aisle{
+    background-color: #ccc;
+}
+
+.aisle{
+    background-color: #ccc;
+}
+
+.seating_area{
+    background-color: #c4c4c4;
+}
