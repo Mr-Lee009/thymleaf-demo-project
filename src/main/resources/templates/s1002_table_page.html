@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Home Page</title>
-    <link rel="stylesheet" th:href="@{/assets/css/common.css}"/>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.css">
     <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.29.0/tableExport.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.js"></script>
@@ -13,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 
 </head>
-
+<body>
 
 <style>
     .select,
@@ -82,7 +82,6 @@
         <i class="fa fa-trash"></i> Delete
     </button>
 </div>
-
 <table
         id="table"
         data-toolbar="#toolbar"
@@ -253,8 +252,8 @@
         initTable()
 
         $('#locale').change(initTable)
-    });
-
+    })
 </script>
+</body>
 </html>
 <!--link doc : https://examples.bootstrap-table.com/#view-source-->
