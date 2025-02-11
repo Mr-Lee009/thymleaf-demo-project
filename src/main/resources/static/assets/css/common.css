@@ -12,17 +12,6 @@ image{
     height: 200px;
 }
 
-.box{
-    background-color: aquamarine;
-    height: 40px;
-    padding: 2px;
-    margin: 2px;
-    border: #ccc 2px solid;
-}
-
-#aisle{
-    background-color: #ccc;
-}
 
 .aisle{
     background-color: #ccc;
@@ -31,3 +20,40 @@ image{
 .seating_area{
     background-color: #c4c4c4;
 }
+
+.info-booking{
+    background-color: #67a7e7;
+}
+
+.seating{
+    background-color: #f8f9fa;
+}
+
+.box{
+    text-align: center;
+    height: 90px;
+    width: 90px;
+    margin: 2px;
+    padding: 10px;
+}
+
+.chair{
+    background-image: url("../img/chair.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 70px;
+    height: 70px;
+}
+
+.number-chair{
+    z-index: 10;
+    color: black;
+    margin: 20px 10px  ;
+}
+
+h6.number-chair {
+    padding: 15px;
+    margin: 0px;
+    color: #67a7e7;
+}
+
