@@ -19,5 +19,11 @@ public class S1002_TestingController {
         model.addAttribute("form",helper.initScreen());
         return "s1002_testing_page";
     }
-    
+     @GetMapping("/table")
+    public String tablePage(Model model){
+        // init screen
+        model.addAttribute("form",helper.initScreen());
+        return "s1002_table_page";
+    }
+
 }
