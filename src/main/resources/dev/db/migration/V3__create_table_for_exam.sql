@@ -1,4 +1,4 @@
-CREATE TABLE Candidate
+CREATE TABLE candidate
 (
     candidate_id      INT PRIMARY KEY AUTO_INCREMENT,
     full_name         VARCHAR(100) NOT NULL,
@@ -10,14 +10,14 @@ CREATE TABLE Candidate
     registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE LicenseType
+CREATE TABLE license_type
 (
     license_type_id INT PRIMARY KEY AUTO_INCREMENT,
     license_name    VARCHAR(10) NOT NULL,
     description     VARCHAR(255)
 );
 
-CREATE TABLE ExamSession
+CREATE TABLE exam_session
 (
     exam_session_id INT PRIMARY KEY AUTO_INCREMENT,
     exam_date       DATE NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE ExamSession
     exam_type       VARCHAR(20) -- e.g., 'Theory' or 'Practical'
 );
 
-CREATE TABLE Exam
+CREATE TABLE exam
 (
     exam_id         INT PRIMARY KEY AUTO_INCREMENT,
     candidate_id    INT,
@@ -41,7 +41,7 @@ CREATE TABLE Exam
     FOREIGN KEY (license_type_id) REFERENCES LicenseType (license_type_id)
 );
 
-CREATE TABLE Question
+CREATE TABLE question
 (
     question_id    INT PRIMARY KEY AUTO_INCREMENT,
     exam_type      VARCHAR(20), -- e.g., 'Theory'
@@ -50,7 +50,7 @@ CREATE TABLE Question
     correct_answer CHAR(1)
 );
 
-CREATE TABLE AnswerChoice
+CREATE TABLE answer_choice
 (
     answer_choice_id INT PRIMARY KEY AUTO_INCREMENT,
     question_id      INT,
@@ -59,7 +59,7 @@ CREATE TABLE AnswerChoice
     FOREIGN KEY (question_id) REFERENCES Question (question_id)
 );
 
-CREATE TABLE CandidateAnswer
+CREATE TABLE candidate_answer
 (
     candidate_answer_id INT PRIMARY KEY AUTO_INCREMENT,
     exam_id             INT,
@@ -71,7 +71,7 @@ CREATE TABLE CandidateAnswer
     FOREIGN KEY (answer_choice_id) REFERENCES AnswerChoice (answer_choice_id)
 );
 
-CREATE TABLE License
+CREATE TABLE license
 (
     license_id      INT PRIMARY KEY AUTO_INCREMENT,
     candidate_id    INT,
