@@ -24,7 +24,7 @@ $(document).ready(function () {
 function generateRowHTML(rowLabel, cols) {
     let seatBoxesArr = cols.map(col =>
         `<div class="col">
-            <div class="box">
+            <div class="box" data-status="AVAILABLE">
                 <div class="chair"><h6 class="number-chair">${rowLabel}${col}</h6></div>
             </div>
         </div>`

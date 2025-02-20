@@ -43,6 +43,7 @@ image{
     background-size: cover;
     height: 70px;
     height: 70px;
+    
 }
 
 .number-chair{
@@ -56,4 +57,9 @@ h6.number-chair {
     margin: 0px;
     color: #67a7e7;
 }
+
+.booked{
+    background-color: #67a7e7 !important;
+}
+
 
