@@ -15,5 +15,15 @@ public class Human {
     private int old;
     private String phone;
     private Double salary;
+    private String type;
+    private String classRoom;
+
+    public Human(String id, String name, int old, String phone, Double salary) {
+        this.id = id;
+        this.name = name;
+        this.old = old;
+        this.phone = phone;
+        this.salary = salary;
+    }
 }
 

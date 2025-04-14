@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" th:href="@{/assets/css/common.css}"/>
+    <script th:src="@{/assets/js/common.js}"></script>
+</head>
+
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>type</th>
+        <th>classRoom</th>
+        <th>id</th>
+        <th>name</th>
+        <th>old</th>
+        <th>phone</th>
+        <th>salary</th>
+    </tr>
+    </thead>
+<!--        <tr th:each="gradeEntry : ${people}">-->
+<!--            <td th:text="${gradeEntry.key}" rowspan="${#list.size(gradeEntry.value)}"></td>-->
+<!--            <td th:each="classEntry : ${gradeEntry.value}" rowspan=rowspan="${#list.size(classEntry.value)}">-->
+<!--                <span th:text="${classEntry.key}"></span>-->
+<!--            </td>-->
+<!--            <td th:each="student : ${classEntry.value}">-->
+<!--                <span th:text="${student.name}"></span>-->
+<!--            </td>-->
+<!--            <td th:each="student : ${classEntry.value}">-->
+<!--                <span th:text="${student.old}"></span>-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--        <tr th:each="gradeEntry : ${people}">-->
+<!--            <td th:text="${gradeEntry.key}" rowspan="${#aggregates.sum(gradeEntry.value.?values.size())}"></td>-->
+<!--            <td th:each="classEntry : ${gradeEntry.value}">-->
+<!--                <span th:text="${classEntry.key}" rowspan="${#lists.size(classEntry.value)}"></span>-->
+<!--            <td th:each="student : ${classEntry.value}">-->
+<!--                <span th:text="${student.name}"></span>-->
+<!--            </td>-->
+<!--            <td th:each="student : ${classEntry.value}">-->
+<!--                <span th:text="${student.birthYear}"></span>-->
+<!--            </td>-->
+<!--            </td>-->
+<!--        </tr>-->
+
+    <tbody>
+    <th:block th:each="x,statTarget : ${people}">
+        <th:block th:each = "y,groupIter : ${x.value}">
+            <tr th:each = "z,detailIter : ${y.value}">
+                <td th:text="${statTarget.index + '_' + groupIter.index + '_' + detailIter.index}" ></td>
+                <td th:text="${x.key}" ></td>
+                <td th:text="${y.key}" th:rowspan="${#lists.size(y.value)}" th:if="${detailIter.first}"></td>
+                <td th:text="${z.id}"></td>
+                <td th:text="${z.name}"></td>
+                <td th:text="${z.old}"></td>
+            </tr>
+        </th:block>
+    </th:block>
+    </tbody>
+</table>
+
+<table>
+    <tbody>
+    <th:block th:each="x,statTarget : ${people}">
+        <th:block th:each = "y,groupIter : ${x.value}">
+            <tr th:each = "z,detailIter : ${y.value}">
+                <td th:text="${x.key}"></td>
+                <td th:text="${y.key}" ></td>
+                <td th:text="${z.id}"></td>
+                <td th:text="${z.name}"></td>
+                <td th:text="${z.old}"></td>
+            </tr>
+        </th:block>
+    </th:block>
+    </tbody>
+</table>
+
+</body>
+</html>
