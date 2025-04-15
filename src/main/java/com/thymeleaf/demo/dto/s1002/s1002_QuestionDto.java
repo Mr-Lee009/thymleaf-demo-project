@@ -9,7 +9,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class s1201_QuestionDto {
+public class s1002_QuestionDto {
     private int id;
     private String question;
     private String image;

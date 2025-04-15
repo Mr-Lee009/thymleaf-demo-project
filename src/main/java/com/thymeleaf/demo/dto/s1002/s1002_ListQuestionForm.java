@@ -13,6 +13,6 @@ public class s1002_ListQuestionForm {
     private String nameTest;
     private Date beginTime;
     private Date endTime;
-    private List<s1201_QuestionDto> questions;
+    private List<s1002_QuestionDto> questions;
     private Human user;
 }

@@ -2,7 +2,7 @@ package com.thymeleaf.demo.controller.S1002_TestingPage;
 
 import com.thymeleaf.demo.dto.Human;
 import com.thymeleaf.demo.dto.s1002.s1002_ListQuestionForm;
-import com.thymeleaf.demo.dto.s1002.s1201_QuestionDto;
+import com.thymeleaf.demo.dto.s1002.s1002_QuestionDto;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -15,10 +15,10 @@ public class s1002_TestingHelper {
 
     public s1002_ListQuestionForm initScreen() {
 
-        List<s1201_QuestionDto> questions = new ArrayList<>();
+        List<s1002_QuestionDto> questions = new ArrayList<>();
 
         questions.add(
-                s1201_QuestionDto.builder()
+                s1002_QuestionDto.builder()
                         .id(1)
                         .image("/default_image.jpg")
                         .question("1.I don't have time for u")
@@ -36,7 +36,7 @@ public class s1002_TestingHelper {
         );
 
         questions.add(
-                s1201_QuestionDto.builder()
+                s1002_QuestionDto.builder()
                         .id(2)
                         .image("/default_image.jpg")
                         .question("2.I don't have time for u")
@@ -51,7 +51,7 @@ public class s1002_TestingHelper {
         );
 
         questions.add(
-                s1201_QuestionDto.builder()
+                s1002_QuestionDto.builder()
                         .id(3)
                         .image("/default_image.jpg")
                         .question("2.I don't have time for u")

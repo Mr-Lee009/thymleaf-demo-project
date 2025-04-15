@@ -34,5 +34,4 @@ public class ProductVariantValue {
     @Temporal(TemporalType.DATE)
     private Date updateAt;
 
-    // Getters and Setters
 }
