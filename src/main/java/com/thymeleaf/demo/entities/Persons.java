@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Persons {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "last_name")
     private String lastName;

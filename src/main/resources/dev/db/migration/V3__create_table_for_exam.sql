@@ -36,9 +36,9 @@ CREATE TABLE exam
     exam_datetime   DATETIME DEFAULT CURRENT_TIMESTAMP,
     score           DECIMAL(5, 2),
     result          VARCHAR(10),
-    FOREIGN KEY (candidate_id) REFERENCES Candidate (candidate_id),
-    FOREIGN KEY (exam_session_id) REFERENCES ExamSession (exam_session_id),
-    FOREIGN KEY (license_type_id) REFERENCES LicenseType (license_type_id)
+    FOREIGN KEY (candidate_id) REFERENCES candidate (candidate_id),
+    FOREIGN KEY (exam_session_id) REFERENCES exam_session (exam_session_id),
+    FOREIGN KEY (license_type_id) REFERENCES license_type (license_type_id)
 );
 
 CREATE TABLE question
@@ -56,7 +56,7 @@ CREATE TABLE answer_choice
     question_id      INT,
     label            CHAR(1) NOT NULL,
     content          TEXT    NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES Question (question_id)
+    FOREIGN KEY (question_id) REFERENCES question (question_id)
 );
 
 CREATE TABLE candidate_answer
@@ -66,9 +66,9 @@ CREATE TABLE candidate_answer
     question_id         INT,
     answer_choice_id    INT,
     answer_time         DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (exam_id) REFERENCES Exam (exam_id),
-    FOREIGN KEY (question_id) REFERENCES Question (question_id),
-    FOREIGN KEY (answer_choice_id) REFERENCES AnswerChoice (answer_choice_id)
+    FOREIGN KEY (exam_id) REFERENCES exam (exam_id),
+    FOREIGN KEY (question_id) REFERENCES question (question_id),
+    FOREIGN KEY (answer_choice_id) REFERENCES answer_choice (answer_choice_id)
 );
 
 CREATE TABLE license
@@ -78,6 +78,6 @@ CREATE TABLE license
     license_type_id INT,
     issue_date      DATE,
     expiry_date     DATE,
-    FOREIGN KEY (candidate_id) REFERENCES Candidate (candidate_id),
-    FOREIGN KEY (license_type_id) REFERENCES LicenseType (license_type_id)
+    FOREIGN KEY (candidate_id) REFERENCES candidate (candidate_id),
+    FOREIGN KEY (license_type_id) REFERENCES license_type (license_type_id)
 );
