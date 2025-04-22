@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
 import java.util.Random;
 
 @RestController
@@ -26,5 +27,10 @@ public class PersonController {
         .name("ducla "+ random.nextInt(1, 100))
         .build());
     return success > 0 ? "insert ok " + success : "false";
+  }
+
+  @GetMapping("/find-all")
+  public Object findAll(){
+    return personService.findAll();
   }
 }
