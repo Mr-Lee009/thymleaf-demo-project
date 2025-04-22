@@ -14,13 +14,13 @@ public class FlywayInitializer {
     @Value("${spring.flyway.locations}")
     private String[] flywaylocations;
 
-    @Value("${spring.datasource.url}")
+    @Value("${spring.datasource.write.url}")
     private String datasourceUrl;
 
-    @Value("${spring.datasource.username}")
+    @Value("${spring.datasource.write.username}")
     private String username;
 
-    @Value("${spring.datasource.password}")
+    @Value("${spring.datasource.write.password}")
     private String password;
 
     @Bean

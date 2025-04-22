@@ -25,6 +25,6 @@ public class PersonController {
         .salary(random.nextDouble(100, 10000))
         .name("ducla "+ random.nextInt(1, 100))
         .build());
-    return success > 0 ? "insert ok" : "false";
+    return success > 0 ? "insert ok " + success : "false";
   }
 }
