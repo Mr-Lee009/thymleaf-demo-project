@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class DataSourceAspect {
   @Before("@annotation(com.thymeleaf.demo.config.datasource.annotation.ReadOnly)")
   public void setReadDataSource() {
+    System.out.printf("setReadDataSource");
     DataSourceContextHolder.setSlave();
   }
 
@@ -19,8 +20,9 @@ public class DataSourceAspect {
   }
 
 //  @Before("execution(* com.example..*Service.*(..)) && !@annotation(com.thymeleaf.demo.config.datasource.annotation.ReadOnly)")
-  @Before("execution(* com.thymeleaf.demo.service.*(..)) && !@annotation(com.thymeleaf.demo.config.datasource.annotation.ReadOnly)")
+  @Before("@annotation(com.thymeleaf.demo.config.datasource.annotation.WriteOnly)")
   public void setWriteDataSource() {
+    System.out.printf("setWriteDataSource");
     DataSourceContextHolder.set(DataSourceType.MASTER);
   }
 

@@ -17,6 +17,7 @@ public class DataSourceContextHolder {
   private static final Random RANDOM = new Random();
 
   public static void set(DataSourceType type) {
+    System.out.printf("\nMASTER DataSourceType =>",type);
     CONTEXT_HOLDER.set(type);
   }
 

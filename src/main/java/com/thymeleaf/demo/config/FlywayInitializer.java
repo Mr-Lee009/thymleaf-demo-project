@@ -14,7 +14,7 @@ public class FlywayInitializer {
     @Value("${spring.flyway.locations}")
     private String[] flywaylocations;
 
-    @Value("${spring.datasource.write.url}")
+    @Value("${spring.datasource.write.jdbc-url}")
     private String datasourceUrl;
 
     @Value("${spring.datasource.write.username}")
