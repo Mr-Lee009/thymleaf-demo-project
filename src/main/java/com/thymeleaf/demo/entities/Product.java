@@ -1,8 +1,11 @@
 package com.thymeleaf.demo.entities;
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.sql.Date;
 
 @Entity
+@Data
 @Table(name = "products")
 public class Product {
     @Id

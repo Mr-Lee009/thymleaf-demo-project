@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>product list</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.29.0/tableExport.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table-locale-all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+
+</head>
+<body>
+<div class="">
+    <div class="row">
+    <div class="col-md-4">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+    </div>
+
+    <div class="col-md-8">
+        <table class="table table-sm">
+            <thead class="thead-dark">
+            <tr>
+                <th><input type="checkbox" name="check-all" id="check-all"></th>
+                <th>product name</th>
+                <th>create at</th>
+                <th>price</th>
+                <th>rating</th>
+                <th>action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${products}">
+                <td><input type="checkbox" th:id="${item.id}"></td>
+                <th th:text="${item.productName}"></th>
+                <th th:text="${item.createAt}"></th>
+                <th th:text="${item.price}"></th>
+                <th th:text="${item.rating}"></th>
+                <th>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                        <button class="btn btn-sm btn-info ">delete</button>
+                        <button class="btn btn-sm btn-warning">edit</button>
+                    </div>
+                </th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+</body>
+</html>
