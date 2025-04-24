@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Large File Upload to S3</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h2>Upload large file to S3 (multipart)</h2>
+<input type="file" id="fileInput" />
+<button id="uploadBtn">Upload</button>
+
+<div id="log" style="white-space: pre-line;"></div>
+
+<script>
+    const PART_SIZE = 10 * 1024 * 1024; // 10MB
+    const API_BASE = 'http://localhost:8080/api/upload/s3'; // Update to your server
+
+    function log(msg) {
+        $('#log').append(msg + '\n');
+    }
+
+    async function uploadFileMultipart(file) {
+        const key = "training/"+file.name;
+        console.info(key);
+
+        // Step 1: Initiate multipart upload
+        const initRes = await $.post(API_BASE + '/initiate?filename='+key);
+        const uploadId = initRes.uploadId;
+        log('Initiated upload: ' + uploadId);
+
+        const partCount = Math.ceil(file.size / PART_SIZE);
+        const parts = [];
+
+        for (let partNumber = 1; partNumber <= partCount; partNumber++) {
+            const start = (partNumber - 1) * PART_SIZE;
+            const end = Math.min(start + PART_SIZE, file.size);
+            const blob = file.slice(start, end);
+
+            // Step 2: Get pre-signed URL
+            const presignedRes = await $.get(API_BASE + '/presigned-url', {
+                key,
+                uploadId,
+                partNumber
+            });
+            const url = presignedRes.url;
+            console.info("url = ",url);
+
+            // Step 3: Upload part via PUT
+            let eTag = uploadPartWithFetch(url, blob);
+            eTag = eTag.replaceAll('"', '');
+            console.info("eTag = ",eTag);
+            parts.push({ partNumber, eTag });
+
+            log(`Uploaded part ${partNumber}/${partCount}`);
+        }
+
+        // Step 4: Complete multipart upload
+        await $.ajax({
+            url: API_BASE + '/complete',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({ key, uploadId, parts })
+        });
+
+        log('Upload complete!');
+    }
+
+    $('#uploadBtn').click(() => {
+        const file = $('#fileInput')[0].files[0];
+        if (!file) return alert('Please choose a file!');
+        uploadFileMultipart(file).catch(e => log('Error: ' + e));
+    });
+
+    function uploadPartWithFetch(url, blob) {
+        return fetch(url, {
+            method: 'PUT',
+            body: blob,
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Upload failed with status ' + response.status);
+            }
+            console.info( response.headers.keys());
+            const eTag = response.headers.get('ETag')?.replaceAll('"', '');
+            return eTag;
+        }).catch(error => {
+            console.error("Upload error:", error);
+            throw error;
+        });
+    }
+</script>
+</body>
+</html>
