@@ -50,6 +50,11 @@ dependencies {
 
     implementation 'org.jboss.logging:jboss-logging'
 
+    // AWS SDK v2 (S3)
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.422')
+    implementation platform('software.amazon.awssdk:bom:2.20.19')
+    implementation 'com.amazonaws:aws-java-sdk-s3'
+
 }
 
 tasks.named('test') {
