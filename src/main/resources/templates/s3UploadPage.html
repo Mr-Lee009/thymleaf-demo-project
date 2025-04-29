@@ -12,7 +12,6 @@
 <div id="log" style="white-space: pre-line;"></div>
 
 <script>
-    let headerNew = null;
     const PART_SIZE = 50 * 1024 * 1024; // 50MB
     const API_BASE = 'http://localhost:8080/api/upload/s3'; // Update to your server
 
@@ -101,7 +100,8 @@
                 console.info(`url for part ${currentPartNumber}:`, url);
 
                 // push 1 promise upload vào batch
-                const uploadPromise = uploadPartWithFetch(url, blob)
+                // const uploadPromise = uploadPartWithFetch(url, blob)
+                const uploadPromise = uploadPartWithRetry(url, blob, 3)
                     .then(eTag => ({
                         partNumber: currentPartNumber,
                         eTag: eTag
@@ -133,12 +133,6 @@
         log('Upload complete!');
     }
 
-    $('#uploadBtn').click(() => {
-        const file = $('#fileInput')[0].files[0];
-        if (!file) return alert('Please choose a file!');
-        uploadFileMultipart(file).catch(e => log('Error: ' + e));
-    });
-
     function uploadPartWithFetch(url, blob) {
         return fetch(url, {
             method: 'PUT',
@@ -147,9 +141,6 @@
             if (!response.ok) {
                 throw new Error('Upload failed with status ' + response.status);
             }
-            console.log("RESTPONSE = ",response);
-            // Accessing headers
-            const headers = response.headers;
 
             // Iterate through headers
             // for (const [name, value] of headers.entries()) {
@@ -168,6 +159,41 @@
             throw error;
         });
     }
+
+    async function uploadPartWithRetry(url, blob, retries = 3) {
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    body: blob
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Upload failed with status ${response.status}`);
+                }
+
+                const eTag = response.headers.get('ETag')?.replace(/"/g, '');
+                if (!eTag) throw new Error("ETag not found");
+                return eTag;
+
+            } catch (err) {
+                console.warn(`Retry ${attempt}/${retries} failed:`, err.message);
+                if (attempt === retries) throw err;
+                await wait(1000 * attempt); // exponential backoff: 1s, 2s, 3s...
+            }
+        }
+    }
+
+    // delay function
+    function wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    $('#uploadBtn').click(() => {
+        const file = $('#fileInput')[0].files[0];
+        if (!file) return alert('Please choose a file!');
+        uploadFileMultipart(file).catch(e => log('Error: ' + e));
+    });
 </script>
 </body>
 </html>
