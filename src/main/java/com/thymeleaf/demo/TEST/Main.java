@@ -6,19 +6,19 @@ public class Main {
   public static long LUONG_CB_DEV = 2000;
   public static long LUONG_CB_PM = 5000;
   public static long LUONG_OT_DU_AN = 1000;
-  public static void main(String[] args) {
-
-    Employee hr1 = new HR(1,LUONG_CB_HR,LUONG_OT_DU_AN,100d,100d,true,true,true);
-    Employee hr2 = new HR(2,LUONG_CB_HR,LUONG_OT_DU_AN,100d,100d,false,false,true);
-    Employee dev = new DEV(3,LUONG_CB_DEV,LUONG_OT_DU_AN,100d,100d,false,false,false);
-    Employee pm = new PM(4,LUONG_CB_PM,LUONG_OT_DU_AN,100d,100d,false,false,false);
-
-    System.out.printf("\nluong cua hr1 "+ hr1.tinhLuong());
-    System.out.printf("\nluong cua hr2 "+ hr2.tinhLuong());
-
-    System.out.printf("\nluong cua dev "+ dev.tinhLuong());
-    System.out.printf("\nluong cua pm "+ pm.tinhLuong());
-  }
+//  public static void main(String[] args) {
+//
+//    Employee hr1 = new HR(1,LUONG_CB_HR,LUONG_OT_DU_AN,100d,100d,true,true,true);
+//    Employee hr2 = new HR(2,LUONG_CB_HR,LUONG_OT_DU_AN,100d,100d,false,false,true);
+//    Employee dev = new DEV(3,LUONG_CB_DEV,LUONG_OT_DU_AN,100d,100d,false,false,false);
+//    Employee pm = new PM(4,LUONG_CB_PM,LUONG_OT_DU_AN,100d,100d,false,false,false);
+//
+//    System.out.printf("\nluong cua hr1 "+ hr1.tinhLuong());
+//    System.out.printf("\nluong cua hr2 "+ hr2.tinhLuong());
+//
+//    System.out.printf("\nluong cua dev "+ dev.tinhLuong());
+//    System.out.printf("\nluong cua pm "+ pm.tinhLuong());
+//  }
 }
 
 abstract class Employee{

@@ -1,199 +1,272 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Large File Upload to S3</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
-<h2>Upload large file to S3 (multipart)</h2>
-<input type="file" id="fileInput" />
-<button id="uploadBtn">Upload</button>
+    <h2>Upload large file to S3 (multipart)</h2>
+    <input type="file" id="fileInput" />
+    <button id="uploadBtn">Upload</button>
 
-<div id="log" style="white-space: pre-line;"></div>
+    <div id="log" style="white-space: pre-line;"></div>
 
-<script>
-    const PART_SIZE = 50 * 1024 * 1024; // 50MB
-    const API_BASE = 'http://localhost:8080/api/upload/s3'; // Update to your server
 
-    function log(msg) {
-        $('#log').append(msg + '\n');
-    }
+    <!-- process bar-->
+    <div id="progressBar" style="width: 100%; background-color: #f3f3f3; margin-top: 20px;">
+        <div id="progress" style="width: 0%; height: 30px; background-color: #4caf50;">
 
-    // async function uploadFileMultipart(file) {
-    //     const key = "training/"+file.name;
-    //     console.info(key);
-    //
-    //     // Step 1: Initiate multipart upload
-    //     const initRes = await $.post(API_BASE + '/initiate?filename='+key);
-    //     const uploadId = initRes.uploadId;
-    //     log('Initiated upload: ' + uploadId);
-    //
-    //     const partCount = Math.ceil(file.size / PART_SIZE);
-    //     const parts = [];
-    //
-    //     for (let partNumber = 1; partNumber <= partCount; partNumber++) {
-    //         const start = (partNumber - 1) * PART_SIZE;
-    //         const end = Math.min(start + PART_SIZE, file.size);
-    //         const blob = file.slice(start, end);
-    //
-    //         // Step 2: Get pre-signed URL
-    //         const presignedRes = await $.get(API_BASE + '/presigned-url', {
-    //             key,
-    //             uploadId,
-    //             partNumber
-    //         });
-    //         const url = presignedRes.url;
-    //         console.info("url = ",url);
-    //
-    //         // Step 3: Upload part via PUT
-    //         let eTag = uploadPartWithFetch(url, blob);
-    //         parts.push({ partNumber, eTag });
-    //
-    //         log(`Uploaded part ${partNumber}/${partCount}`);
-    //     }
-    //
-    //     console.log('parts', parts);
-    //
-    //     // Step 4: Complete multipart upload
-    //     await $.ajax({
-    //         url: API_BASE + '/complete',
-    //         method: 'POST',
-    //         contentType: 'application/json',
-    //         data: JSON.stringify({ key, uploadId, parts })
-    //     });
-    //
-    //     log('Upload complete!');
-    // }
+        </div>
+    </div>
 
-    async function uploadFileMultipart(file) {
-        const key = "training/" + file.name;
-        console.info(key);
+    <!-- video -->
+    <div id="videoContainer">
+        <video id="uploadedVideo" controls style="width: 100%;"></video>
+    </div>
+    
+    <script>
+        const PART_SIZE = 50 * 1024 * 1024; // 50MB
+        const API_BASE = 'http://localhost:8080/api/upload/s3'; // Update to your server
 
-        // Step 1: Initiate multipart upload
-        const initRes = await $.post(API_BASE + '/initiate?filename=' + key);
-        const uploadId = initRes.uploadId;
-        log('Initiated upload: ' + uploadId);
-
-        const partCount = Math.ceil(file.size / PART_SIZE);
-        const parts = [];
-
-        const CONCURRENT_UPLOADS = 5; // chỉ upload tối đa 5 part cùng lúc
-
-        let partNumber = 1;
-        while (partNumber <= partCount) {
-            const currentBatch = [];
-
-            // tạo 1 nhóm tối đa 5 parts
-            for (let i = 0; i < CONCURRENT_UPLOADS && partNumber <= partCount; i++, partNumber++) {
-                const currentPartNumber = partNumber; //  "chốt" giá trị tại thời điểm này
-
-                const start = (currentPartNumber - 1) * PART_SIZE;
-                const end = Math.min(start + PART_SIZE, file.size);
-                const blob = file.slice(start, end);
-
-                const presignedRes = await $.get(API_BASE + '/presigned-url', {
-                    key,
-                    uploadId,
-                    partNumber
-                });
-                const url = presignedRes.url;
-                console.info(`url for part ${currentPartNumber}:`, url);
-
-                // push 1 promise upload vào batch
-                // const uploadPromise = uploadPartWithFetch(url, blob)
-                const uploadPromise = uploadPartWithRetry(url, blob, 3)
-                    .then(eTag => ({
-                        partNumber: currentPartNumber,
-                        eTag: eTag
-                    }));
-
-                currentBatch.push(uploadPromise);
-
-                log(`Started upload part ${currentPartNumber}/${partCount}`);
-            }
-
-            // Chờ tất cả trong batch upload xong
-            const batchResults = await Promise.all(currentBatch);
-            parts.push(...batchResults);
-
-            console.log(`Batch uploaded: ${batchResults.length} parts`);
+        function log(msg) {
+            $('#log').append(msg + '\n');
         }
 
-        console.log('All parts uploaded:', parts);
-        console.log('complete request:', JSON.stringify({ key, uploadId, parts }));
+        // async function uploadFileMultipart(file) {
+        //     const key = "training/"+file.name;
+        //     console.info(key);
+        //
+        //     // Step 1: Initiate multipart upload
+        //     const initRes = await $.post(API_BASE + '/initiate?filename='+key);
+        //     const uploadId = initRes.uploadId;
+        //     log('Initiated upload: ' + uploadId);
+        //
+        //     const partCount = Math.ceil(file.size / PART_SIZE);
+        //     const parts = [];
+        //
+        //     for (let partNumber = 1; partNumber <= partCount; partNumber++) {
+        //         const start = (partNumber - 1) * PART_SIZE;
+        //         const end = Math.min(start + PART_SIZE, file.size);
+        //         const blob = file.slice(start, end);
+        //
+        //         // Step 2: Get pre-signed URL
+        //         const presignedRes = await $.get(API_BASE + '/presigned-url', {
+        //             key,
+        //             uploadId,
+        //             partNumber
+        //         });
+        //         const url = presignedRes.url;
+        //         console.info("url = ",url);
+        //
+        //         // Step 3: Upload part via PUT
+        //         let eTag = uploadPartWithFetch(url, blob);
+        //         parts.push({ partNumber, eTag });
+        //
+        //         log(`Uploaded part ${partNumber}/${partCount}`);
+        //     }
+        //
+        //     console.log('parts', parts);
+        //
+        //     // Step 4: Complete multipart upload
+        //     await $.ajax({
+        //         url: API_BASE + '/complete',
+        //         method: 'POST',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify({ key, uploadId, parts })
+        //     });
+        //
+        //     log('Upload complete!');
+        // }
 
-        // Step 4: Complete multipart upload
-        await $.ajax({
-            url: API_BASE + '/complete',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ key, uploadId, parts })
-        });
+        // ...existing code...
 
-        log('Upload complete!');
-    }
+        function updateProgressBar(completedParts, totalParts) {
+            const progressPercentage = (completedParts / totalParts) * 100;
+            $('#progress').css('width', progressPercentage + '%');
+            $('#progress').text(Math.round(progressPercentage) + '%');
+        }
 
-    function uploadPartWithFetch(url, blob) {
-        return fetch(url, {
-            method: 'PUT',
-            body: blob,
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error('Upload failed with status ' + response.status);
-            }
+        // ...existing code...
 
-            // Iterate through headers
-            // for (const [name, value] of headers.entries()) {
-            //     console.log(`${name}: ${value}`);
-            // }
+        async function uploadFileMultipart(file) {
+            const key = "training/" + file.name;
+            console.info(key);
 
-            const eTag = response.headers.get('ETag')?.replaceAll('"', '');
-            if (!eTag) {
-                console.warn('No ETag found in response headers');
-            } else {
-                console.info('Received ETag:', eTag);
-            }
-            return eTag;
-        }).catch(error => {
-            console.error("Upload error:", error);
-            throw error;
-        });
-    }
+            // Step 1: Initiate multipart upload
+            const initRes = await $.post(API_BASE + '/initiate?filename=' + key);
+            const uploadId = initRes.uploadId;
+            log('Initiated upload: ' + uploadId);
 
-    async function uploadPartWithRetry(url, blob, retries = 3) {
-        for (let attempt = 1; attempt <= retries; attempt++) {
-            try {
-                const response = await fetch(url, {
-                    method: 'PUT',
-                    body: blob
-                });
+            const partCount = Math.ceil(file.size / PART_SIZE);
+            const parts = [];
 
-                if (!response.ok) {
-                    throw new Error(`Upload failed with status ${response.status}`);
+            const CONCURRENT_UPLOADS = 5; // chỉ upload tối đa 5 part cùng lúc
+
+            let partNumber = 1;
+            let completedParts = 0; // Số phần đã tải lên
+
+            while (partNumber <= partCount) {
+                const currentBatch = [];
+
+                // tạo 1 nhóm tối đa 5 parts
+                for (let i = 0; i < CONCURRENT_UPLOADS && partNumber <= partCount; i++, partNumber++) {
+                    const currentPartNumber = partNumber; //  "chốt" giá trị tại thời điểm này
+
+                    const start = (currentPartNumber - 1) * PART_SIZE;
+                    const end = Math.min(start + PART_SIZE, file.size);
+                    const blob = file.slice(start, end);
+
+                    const presignedRes = await $.get(API_BASE + '/presigned-url', {
+                        key,
+                        uploadId,
+                        partNumber
+                    });
+                    const url = presignedRes.url;
+                    console.info(`url for part ${currentPartNumber}:`, url);
+
+                    // push 1 promise upload vào batch
+                    const uploadPromise = uploadPartWithRetry(url, blob, 3)
+                        .then(eTag => {
+                            completedParts++; // Tăng số phần đã tải lên
+                            updateProgressBar(completedParts, partCount); // Cập nhật progressBar
+                            return {
+                                partNumber: currentPartNumber,
+                                eTag: eTag
+                            };
+                        });
+
+                    currentBatch.push(uploadPromise);
+
+                    log(`Started upload part ${currentPartNumber}/${partCount}`);
                 }
 
-                const eTag = response.headers.get('ETag')?.replace(/"/g, '');
-                if (!eTag) throw new Error("ETag not found");
-                return eTag;
+                // Chờ tất cả trong batch upload xong
+                const batchResults = await Promise.all(currentBatch);
+                parts.push(...batchResults);
 
-            } catch (err) {
-                console.warn(`Retry ${attempt}/${retries} failed:`, err.message);
-                if (attempt === retries) throw err;
-                await wait(1000 * attempt); // exponential backoff: 1s, 2s, 3s...
+                console.log(`Batch uploaded: ${batchResults.length} parts`);
+            }
+
+            console.log('All parts uploaded:', parts);
+            const dataCompletedRequest = {
+                key: key,
+                uploadId: uploadId,
+                parts: parts
+            };
+            console.log('complete request:', JSON.stringify(dataCompletedRequest));
+
+            // Step 4: Complete multipart upload
+            try {
+                const completeResponse = await $.ajax({
+                    url: API_BASE + '/complete',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(dataCompletedRequest)
+                });
+
+                // Hứng chuỗi trả về từ API
+                const resultString = completeResponse; // Nếu API trả về chuỗi
+                log('Upload complete! Response: ' + resultString);
+                console.info('Complete response:', resultString);
+
+                updateProgressBar(partCount, partCount); // Đảm bảo progressBar đầy 100% khi hoàn tất
+
+                // set url cho video
+                setVideoSource(resultString);
+
+            } catch (error) {
+                log('Error completing upload: ' + error.message);
+                console.error('Complete upload error:', error);
+            }
+
+            // Ghi lại thông tin về các phần đã tải lên
+            console.log('Uploaded parts:', parts);
+        }
+
+        // ...existing code...
+
+        function uploadPartWithFetch(url, blob) {
+            // console.info("uploadPartWithFetch", url, blob);
+            // console.info("uploadPartWithFetch", url, blob.size);
+            return fetch(url, {
+                method: 'PUT',
+                body: blob,
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed with status ' + response.status);
+                }
+
+                // Iterate through headers
+                // for (const [name, value] of headers.entries()) {
+                //     console.log(`${name}: ${value}`);
+                // }
+
+                const eTag = response.headers.get('ETag')?.replaceAll('"', '');
+                if (!eTag) {
+                    console.warn('No ETag found in response headers');
+                } else {
+                    console.info('Received ETag:', eTag);
+                }
+                return eTag;
+            }).catch(error => {
+                console.error("Upload error:", error);
+                throw error;
+            });
+        }
+
+        async function uploadPartWithRetry(url, blob, retries = 3) {
+            for (let attempt = 1; attempt <= retries; attempt++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'PUT',
+                        body: blob
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Upload failed with status ${response.status}`);
+                    }
+
+                    const eTag = response.headers.get('ETag')?.replace(/"/g, '');
+                    if (!eTag) throw new Error("ETag not found");
+                    return eTag;
+
+                } catch (err) {
+                    console.warn(`Retry ${attempt}/${retries} failed:`, err.message);
+                    if (attempt === retries) throw err;
+                    await wait(1000 * attempt); // exponential backoff: 1s, 2s, 3s...
+                }
             }
         }
-    }
 
-    // delay function
-    function wait(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+        // delay function
+        function wait(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
-    $('#uploadBtn').click(() => {
-        const file = $('#fileInput')[0].files[0];
-        if (!file) return alert('Please choose a file!');
-        uploadFileMultipart(file).catch(e => log('Error: ' + e));
-    });
-</script>
+        $('#uploadBtn').click(() => {
+            const file = $('#fileInput')[0].files[0];
+            if (!file) return alert('Please choose a file!');
+            uploadFileMultipart(file).catch(e => log('Error: ' + e));
+        });
+
+        // Hàm để gán URL cho thẻ video
+        function setVideoSource(url) {
+            let videoElement = document.getElementById('uploadedVideo');
+            if (!videoElement) {
+                // Nếu thẻ video chưa tồn tại, tạo mới
+                videoElement = document.createElement('video');
+                videoElement.id = 'uploadedVideo';
+                videoElement.controls = true;
+                videoElement.style.width = '100%';
+                document.body.appendChild(videoElement);
+            }
+            videoElement.src = url;
+            videoElement.load();
+            log('Video source set to: ' + url);
+        }
+    </script>
 </body>
+
 </html>
