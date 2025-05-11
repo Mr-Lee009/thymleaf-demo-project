@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" th:href="@{/assets/css/common.css}"/>
+    <script th:src="@{/assets/js/common.js}"></script>
+</head>
+
+
+
+<body>
+    <label>Begin Time</label>
+    <b>[[${form.beginTime}]]</b>
+    <br>
+    <label>End Time</label>
+    <b>[[${form.endTime}]]</b>
+
+<table>
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>image</th>
+        <th>question</th>
+        <th>anserts</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="sub : ${form.questions}">
+        <td th:text="${sub.id}"/>
+        <td>
+            <img th:src="${sub.image}">
+        </td>
+        <td th:text="${sub.question}"/>
+        <td th:text="${sub.image}"/>
+        <td>
+            <th:block  th:each="sub2 : ${sub.anserts}">
+                <input type="radio" value=""><b>[[${sub2.key + ':' + sub2.value}]]</b><br>
+            </th:block>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

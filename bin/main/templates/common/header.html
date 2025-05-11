@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="header">
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/css/common.css}"/>
+</th:block>
+
+<th:block th:fragment="footer">
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/common.js}"></script>
+</th:block>
+
+<div th:fragment="menu">
+    <h4>Menu</h4>
+    <ul>
+        <li>Biff Stake</li>
+        <li>Vegetable</li>
+        <li>Chill</li>
+        <li>Tomato</li>
+        <li>Garlic</li>
+    </ul>
+</div>
+
+
+<div th:fragment="formSearch(nameInput,isShowButton,nameSelection,isShowSlection,values)">
+
+    <div class="div1">
+        <h1 th:text="${nameInput}"></h1>
+        <input th:if="${isShowButton}">
+    </div>
+
+    <div class="div2">
+        <h1 th:text="${nameSelection}"></h1>
+        <select th:if="${isShowSlection}">
+            <th:block th:each="value : ${values}">
+                <option th:value="${value}" th:text="${value}"></option>
+            </th:block>
+        </select>
+    </div>
+</div>
+
+</html>

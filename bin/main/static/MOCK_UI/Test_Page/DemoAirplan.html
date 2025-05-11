@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airplane Cabin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #eef1f5;
+        }
+
+        .cabin {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            text-align: center;
+            line-height: 40px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Trạng thái ghế */
+        .seat.available { background-color: #4CAF50; color: white; } /* Ghế trống */
+        .seat.booked { background-color: #FF9800; color: white; } /* Ghế đã đặt */
+        .seat.occupied { background-color: #F44336; color: white; } /* Ghế bị chiếm dụng */
+        .aisle { width: 40px; height: 40px; visibility: hidden; } /* Lối đi */
+
+        .cockpit {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            background-color: #607D8B;
+            color: white;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cabin">
+        <div class="cockpit">✈️ Cockpit</div>
+        
+        <!-- Hàng ghế -->
+        <div class="row">
+            <div class="seat available">A1</div>
+            <div class="seat booked">A2</div>
+            <div class="seat available">A3</div>
+            <div class="aisle"></div>
+            <div class="seat available">A4</div>
+            <div class="seat occupied">A5</div>
+            <div class="seat available">A6</div>
+        </div>
+
+        <div class="row">
+            <div class="seat available">B1</div>
+            <div class="seat booked">B2</div>
+            <div class="seat available">B3</div>
+            <div class="aisle"></div>
+            <div class="seat available">B4</div>
+            <div class="seat booked">B5</div>
+            <div class="seat available">B6</div>
+        </div>
+
+        <div class="row">
+            <div class="seat booked">C1</div>
+            <div class="seat available">C2</div>
+            <div class="seat occupied">C3</div>
+            <div class="aisle"></div>
+            <div class="seat available">C4</div>
+            <div class="seat occupied">C5</div>
+            <div class="seat booked">C6</div>
+        </div>
+
+    </div>
+
+</body>
+</html>
