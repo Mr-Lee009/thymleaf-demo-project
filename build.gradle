@@ -56,6 +56,7 @@ dependencies {
     implementation platform('software.amazon.awssdk:bom:2.20.19')
     implementation 'com.amazonaws:aws-java-sdk-s3'
 
+//    implementation 'com.github.kokorin.jaffree:jaffree:2020.09.13'
 }
 
 tasks.named('test') {

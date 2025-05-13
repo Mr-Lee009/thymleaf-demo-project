@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINE Chat</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            margin-top: 20px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+<h1>LINE Chat</h1>
+<textarea id="message" placeholder="Type your message here..."></textarea>
+<button id="sendButton">Send</button>
+<p class="response" id="response"></p>
+
+<script>
+    $(document).ready(function() {
+        $('#sendButton').click(function() {
+            const message = $('#message').val();
+            const responseElement = $('#response');
+
+            $.ajax({
+                url: '/webhook',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    events: [
+                        {
+                            replyToken: 'dummyToken',
+                            message: { text: message }
+                        }
+                    ]
+                }),
+                success: function() {
+                    responseElement.text('Message sent successfully!');
+                },
+                error: function() {
+                    responseElement.text('Error sending message.');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
