@@ -19,7 +19,36 @@ public class S2000_ProductHelper {
     return repo.findAll();
   }
 
+  /**
+   * find all product with pageable
+   * @param pageable pageable
+   * @return page of product
+   */
   public Page<Product> findAllPageable(Pageable pageable) {
     return repo.findAll(pageable);
+  }
+
+  /**
+   * delete product by id
+   * @param id product id
+   */
+  public void deletedProductById(Long id) {
+    repo.deleteById(id);
+  }
+
+  /**
+   * find product by id
+   * @param id product id
+   */
+  public Product findById(Long id) {
+    return repo.findById(id).get();
+  }
+
+  /**
+   * Delete product by list of id
+   * @param product_ids
+   */
+  public void deleteInListId(List<Long> ids) {
+    repo.deleteAllById(ids);
   }
 }

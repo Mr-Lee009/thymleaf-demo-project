@@ -3,16 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>product list</title>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/tableexport.jquery.plugin@1.29.0/tableExport.min.js"></script>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+
+    <!--    JS for bootstrap table-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/bootstrap-table-locale-all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.0/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--  import font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
+<style>
+    /* HTML: <div class="loader"></div> */
+    .loader {
+        text-align: center;
+        width: 40px;
+        aspect-ratio: 1;
+        outline: 2px solid #fff;
+        background: radial-gradient(farthest-side, #000 90%, #0000) 0 0/8px 8px no-repeat,
+        conic-gradient(from 90deg at 10px 10px, #0000 90deg, #fff 0),
+        conic-gradient(from -90deg at 30px 30px, #0000 90deg, #fff 0);
+        animation: l1 1.5s infinite;
+    }
+
+    @keyframes l1 {
+        0% {
+            background-position: 0 0
+        }
+        25% {
+            background-position: 100% 0
+        }
+        50% {
+            background-position: 100% 100%
+        }
+        75% {
+            background-position: 0 100%
+        }
+        100% {
+            background-position: 0 0
+        }
+    }
+
+    .background-loader{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background-color: #1b2832;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
 <body>
+<div class="background-loader d-none">
+    <div class="loader"></div>
+</div>
+
 <div class="">
     <div class="row">
         <div class="col-md-4">
@@ -37,23 +96,34 @@
                 </thead>
                 <tbody>
                 <tr th:each="item : ${products}">
-                    <td><input type="checkbox" th:id="${item.id}"></td>
+                    <td><input class="product-item" type="checkbox" th:data-id="${item.id}"></td>
                     <th th:text="${item.productName}"></th>
                     <th th:text="${item.createAt}"></th>
                     <th th:text="${item.price}"></th>
                     <th th:text="${item.rating}"></th>
                     <th>
                         <div class="btn-group btn-group-sm" role="group" aria-label="...">
-                            <button class="btn btn-sm btn-info ">delete</button>
+                            <button class="btn btn-sm btn-info "><i class="fa fa-car"></i></button>
                             <button class="btn btn-sm btn-warning">edit</button>
+                            <button class="btn btn-sm btn-danger">delete</button>
                         </div>
                     </th>
                 </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="delte-all">
+                            <button class="btn btn-danger btn-sm" th:hidden="${#lists.isEmpty(products)}">
+                                   delete all
+                            </button>
+                        </div>
+                    </td>
+                </tfoot>
             </table>
 
             <!-- Pagination -->
-            <div class="page">
+            <div class="page" th:if="${totalPages > 0}">
                 <ul class="pagination">
                     <!-- Previous page -->
                     <li class="page-item" th:hidden="${currentPage == 0}">
@@ -74,10 +144,163 @@
                     <li class="page-item" th:hidden="${currentPage ==  totalPages - 1}">
                         <a th:class="${currentPage == totalPages - 1 ? 'btn btn-success' : 'btn'}" class="page-link"
                            th:href="@{'/product/products?page=' + ${currentPage + 1} + '&size=' + ${size}}">Next</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+
+        <!-- btn call API -->
+        <div class="col-md-8">
+            <input type="text" class="form-control" id="url"  placeholder="API URL">
+            <button class="btn btn-primary" id="callAPI">Call API</button>
+        </div>
+    </div>
 </div>
+<script type="text/javascript">
+    const DELETE_ALL_URL = '/api/product/delete-all';
+    const GET_INFO_URL = '/api/product/api/';
+
+
+
+    $(document).ready(function () {
+
+        // Show the loader when the page is loading
+        function showLoader(hide) {
+            if (hide === true) {
+                $('.background-loader').removeClass('d-none');
+            }
+            else{
+                $('.background-loader').addClass('d-none');
+            }
+
+        }
+
+        // call API
+        $('#callAPI').click(function () {
+            // Get the URL from the input field
+            var url = $('#url').val();
+            if (url) {
+                getAPI(url);
+            } else {
+                alert('Please enter a valid URL');
+            }
+        });
+
+        // check all checkbox
+        $('#check-all').click(function () {
+            var checked = $(this).is(':checked');
+            $('.product-item').prop('checked', checked);
+        });
+
+        // check all checkbox when all item checked
+        $('.product-item').click(function () {
+            var allChecked = true;
+            $('.product-item').each(function () {
+                if (!$(this).is(':checked')) {
+                    allChecked = false;
+                }
+            });
+            $('#check-all').prop('checked', allChecked);
+        })
+
+        // delete all product item selected
+        $('.delte-all').click(function () {
+            var selectedItems = [];
+
+            $('.product-item:checked').each(function () {
+                // Get the data-id attribute of the selected item
+                selectedItems.push($(this).data('id'));
+            });
+
+            if (selectedItems.length > 0) {
+                // Perform delete operation with selectedItems
+                console.log('Selected items to delete:', selectedItems);
+                let data = {
+                    ids: selectedItems
+                };
+
+                // Call the delete API
+                console.log(JSON.stringify(data));
+
+                postAPI(DELETE_ALL_URL, data, (response) => {
+                    console.table(response);
+                    location.reload();
+                });
+
+            } else {
+                alert('Please select at least one item to delete.');
+            }
+        });
+
+        // detele item
+        $('.btn-danger').click(function () {
+            // Get the data-id attribute of the selected item
+            let id = $(this).closest('tr').find('.product-item').data('id');
+            console.log('Selected item to delete:', id);
+            let data = {
+                ids: [id]
+            };
+
+            // Call the delete API
+            console.log(JSON.stringify(data));
+
+            postAPI(DELETE_ALL_URL, data, (response) => {
+                console.table(response);
+                location.reload();
+            });
+        });
+
+        // call API anh show loading
+        function getAPI(URL) {
+            console.log('url = ', URL);
+            showLoader(true);
+            return  $.ajax({
+                url: URL,
+                type: 'GET',
+                success: function (data) {
+                    // Handle the response data
+                    console.table(data);
+                },
+                error: function (error) {
+                    // Handle the error
+                    console.table(error);
+                },
+                complete: function () {
+                    // Hide the loader after the request is complete
+                    showLoader(false);
+                }
+            });
+        }
+
+        // post API
+        function postAPI(URL, data, successFunction) {
+            console.log('POST url = ', URL);
+            showLoader(true);
+            return new Promise(function (resolve, reject) {
+                $.ajax({
+                    url: URL,
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        resolve(successFunction(data));
+                    },
+                    error: function (error) {
+                        reject(error);
+                    },
+                    complete: function () {
+                        // Hide the loader after the request is complete
+                        showLoader(false);
+                    }
+                });
+            })
+        }
+    });
+</script>
 </body>
 </html>
